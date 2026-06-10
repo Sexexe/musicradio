@@ -3,7 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MUSIC RADIO ONLINE</title>
+<title>MUSIC RADIO ONLINE — Глобальный портал музыкальных радиостанций</title>
+
+<!-- SEO: Описание для поисковиков -->
+<meta name="description" content="Глобальный портал музыкальных радиостанций MUSIC RADIO ONLINE. Слушайте бесплатно 120+ проверенных станций со всего мира: поп, рок, электроника, джаз, классика, эмбиент и хип-хоп. Без рекламы, в высоком качестве.">
+
+<!-- SEO: Ключевые слова -->
+<meta name="keywords" content="онлайн радио, слушать радио бесплатно, интернет радио, музыка онлайн, радио поп, радио рок, электронная музыка, джаз радио, эмбиент, мировые радиостанции, music radio online, глобальный портал музыкальных радиостанций">
+
+<!-- Open Graph: Для красивого отображения в соцсетях и мессенджерах -->
+<meta property="og:title" content="MUSIC RADIO ONLINE — Глобальный портал музыкальных радиостанций">
+<meta property="og:description" content="120+ живых радиостанций со всего мира. Поп, рок, электроника, джаз, классика. Слушайте бесплатно в высоком качестве без рекламы.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://musicradio.online">
+<meta property="og:locale" content="ru_RU">
+
+<!-- Каноническая ссылка -->
+<link rel="canonical" href="https://musicradio.online">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&family=Roboto+Mono:wght@300;400&display=swap" rel="stylesheet">
@@ -45,7 +62,6 @@ html,body{
   background:linear-gradient(180deg,var(--purple-dark) 0%,var(--purple-mid) 30%,var(--void) 100%);
 }
 
-/* Вспышки на фоне */
 .flashes{
   position:absolute;inset:0;
   pointer-events:none;z-index:2;
@@ -463,6 +479,31 @@ td{padding:12px 4px}
 .ctrl-icon.next-icon::after{content:'';position:absolute;top:0;right:0;width:2px;height:14px;background:currentColor}
 .ctrl-icon.mute-icon{font-size:1.1rem;line-height:1}
 
+/* ===================== SEO БЛОК И ФУТЕР ===================== */
+.seo-section{
+  margin-top:40px;
+  padding:24px;
+  border:1px solid var(--line);
+  border-radius:24px;
+  background:rgba(255,255,255,.01);
+}
+.seo-section h2{
+  font-family:'Roboto Mono',monospace;
+  font-size:.7rem;
+  color:var(--white);
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  margin-bottom:12px;
+  text-shadow:0 0 8px rgba(255,255,255,.3);
+}
+.seo-section p{
+  font-size:.75rem;
+  line-height:1.7;
+  color:var(--mid);
+  margin-bottom:10px;
+}
+.seo-section p:last-child{margin-bottom:0}
+
 footer{
   text-align:center;font-size:.55rem;color:var(--dim);
   margin-top:30px;letter-spacing:.3em;font-weight:300;
@@ -491,6 +532,9 @@ footer{
   .now-playing{font-size:.6rem;padding:12px 16px;border-radius:20px 20px 0 0}
   .np-btn{width:40px;height:40px;font-size:1rem}
   .np-controls{gap:12px}
+  .seo-section{padding:16px;border-radius:20px}
+  .seo-section h2{font-size:.6rem}
+  .seo-section p{font-size:.65rem}
 }
 </style>
 </head>
@@ -599,6 +643,14 @@ footer{
       </table>
     </div>
   </div>
+
+  <!-- ===================== SEO БЛОК ===================== -->
+  <section class="seo-section">
+    <h2>О проекте</h2>
+    <p>MUSIC RADIO ONLINE — глобальный портал музыкальных радиостанций, объединяющий более 120 проверенных эфиров со всего мира. Мы тщательно отобрали лучшие потоки в жанрах поп, рок, электроника, джаз, классика, эмбиент, инди, хип-хоп, метал, лаунж и новости.</p>
+    <p>Все станции работают в прямом эфире без искусственных плейлистов. Высокое качество звука, минималистичный интерфейс и полное отсутствие визуальной рекламы создают атмосферу настоящего космического радио. Слушайте музыку из Германии, Швейцарии, США, Франции и других стран в одном месте.</p>
+    <p>Проект создан для тех, кто ценит живой эфир, чистый звук и свободу выбора. MUSIC RADIO ONLINE — ваш персональный спутник в мире мировой музыки.</p>
+  </section>
 
   <footer data-i18n="footer">WORLD RADIO · VERIFIED STREAMS</footer>
 </div>
@@ -998,7 +1050,6 @@ audioPlayer.addEventListener('error',()=>{
 });
 
 // ===================== АНИМАЦИЯ ШАПКИ =====================
-// Вспышки
 const flashesContainer=document.getElementById('flashes');
 function createFlash(){
   const flash=document.createElement('div');
