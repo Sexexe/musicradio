@@ -104,14 +104,14 @@ canvas {
 #spores { z-index: 3; }
 #sonar { z-index: 5; }
 
-/* ЛОГОТИП — БЕЗ РАСТЯГИВАНИЙ */
+/* ЛОГОТИП — УВЕЛИЧЕН НА 25% */
 .core-wrapper {
   position: absolute;
   top: 42%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: min(58vw, 360px);
-  height: min(58vw, 360px);
+  width: min(72.5vw, 450px);
+  height: min(72.5vw, 450px);
   z-index: 10;
   pointer-events: none;
   display: flex;
@@ -156,19 +156,19 @@ canvas {
 }
 
 .orbit-1 {
-  width: min(82vw, 580px);
+  width: min(90vw, 700px);
   animation: orbitSpin 40s linear infinite;
   transform: translate(-50%, -50%) rotateX(70deg);
 }
 
 .orbit-2 {
-  width: min(72vw, 740px);
+  width: min(80vw, 880px);
   animation: orbitSpin2 60s linear infinite reverse;
   transform: translate(-50%, -50%) rotateX(75deg) rotateZ(30deg);
 }
 
 .orbit-3 {
-  width: min(62vw, 900px);
+  width: min(70vw, 1060px);
   animation: orbitSpin3 90s linear infinite;
   transform: translate(-50%, -50%) rotateX(65deg) rotateZ(-45deg);
 }
@@ -979,8 +979,8 @@ footer {
   .sliders-row { gap: 16px; }
   input[type="range"].hslider { width: 80px; }
   .core-wrapper {
-    width: min(52vw, 280px);
-    height: min(52vw, 280px);
+    width: min(65vw, 380px);
+    height: min(65vw, 380px);
   }
 }
 
@@ -996,8 +996,8 @@ footer {
   }
   .corner-tag { font-size: 0.35rem; }
   .core-wrapper {
-    width: min(48vw, 240px);
-    height: min(48vw, 240px);
+    width: min(60vw, 300px);
+    height: min(60vw, 300px);
     top: 40%;
   }
   .sliders-row {
@@ -1099,7 +1099,7 @@ footer {
     <span class="beacon-dot" style="animation-delay:0.75s"></span>
   </div>
 
-  <!-- ЛОГОТИП -->
+  <!-- ЛОГОТИП (УВЕЛИЧЕН НА 25%) -->
   <div class="core-wrapper">
     <svg class="logo-svg" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -1851,9 +1851,12 @@ function animateSpores() {
 }
 animateSpores();
 
-/* ===================== SONAR (КРУГЛЫЕ ВОЛНЫ) ===================== */
+/* ===================== SONAR (КРУГЛЫЕ ВОЛНЫ, РАСТВОРЕНИЕ 5 МИН, ЦЕНТР = ЛОГОТИП) ===================== */
 var sonarCanvas = document.getElementById('sonar');
 var soctx = sonarCanvas.getContext('2d');
+var WAVE_LIFETIME_MS = 5 * 60 * 1000; // 5 минут
+var MAX_WAVES = 150;
+var waves = [];
 
 function resizeSonar() {
   sonarCanvas.width = window.innerWidth * devicePixelRatio;
@@ -1862,21 +1865,29 @@ function resizeSonar() {
 resizeSonar();
 
 function SonarWave() {
+  // Центр совпадает с core-wrapper top:42%
   this.cx = sonarCanvas.width / 2;
   this.cy = sonarCanvas.height * 0.42;
   this.radius = 0;
-  this.maxRadius = Math.min(sonarCanvas.width, sonarCanvas.height) * 0.42;
+  // Максимальный радиус = половина меньшей стороны → гарантированный круг
+  this.maxRadius = Math.min(sonarCanvas.width, sonarCanvas.height) * 0.48;
   this.speed = 1.5 + Math.random();
+  this.born = Date.now();
 }
+
+SonarWave.prototype.isExpired = function() {
+  return (Date.now() - this.born) > WAVE_LIFETIME_MS;
+};
 
 SonarWave.prototype.update = function() {
   this.radius += this.speed;
-  return this.radius < this.maxRadius;
+  return this.radius < this.maxRadius && !this.isExpired();
 };
 
 SonarWave.prototype.draw = function() {
   var progress = this.radius / this.maxRadius;
   var alpha = (1 - progress) * 0.35;
+  if (alpha <= 0) return;
   soctx.strokeStyle = 'rgba(255,255,255,' + alpha + ')';
   soctx.lineWidth = 1.5 * devicePixelRatio;
   soctx.beginPath();
@@ -1890,9 +1901,11 @@ SonarWave.prototype.draw = function() {
   }
 };
 
-var waves = [];
-
 function spawnWave() {
+  // Ограничиваем количество волн для производительности
+  if (waves.length >= MAX_WAVES) {
+    waves.shift();
+  }
   waves.push(new SonarWave());
 }
 setInterval(spawnWave, 2000);
@@ -1915,6 +1928,14 @@ animateSonar();
 window.addEventListener('resize', function() {
   resizeSpores();
   resizeSonar();
+  // Пересчитываем центры существующих волн при ресайзе
+  var newCx = sonarCanvas.width / 2;
+  var newCy = sonarCanvas.height * 0.42;
+  waves.forEach(function(w) {
+    w.cx = newCx;
+    w.cy = newCy;
+    w.maxRadius = Math.min(sonarCanvas.width, sonarCanvas.height) * 0.48;
+  });
 });
 
 /* ===================== INIT ===================== */
