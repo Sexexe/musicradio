@@ -52,7 +52,6 @@
   }
 }
 </script>
-<!-- Dynamic Stations Schema will be injected via JS at bottom -->
 <script type="application/ld+json" id="stations-schema">[]</script>
 
 <!-- Fonts & Telegram -->
@@ -74,6 +73,7 @@
   --glow: rgba(255, 255, 255, 0.8);
   --red: #ff3355;
   --yellow: #ffaa00;
+  --purple: #b066ff;
   --purple-dark: #05000a;
   --purple-mid: #0f001a;
 }
@@ -99,7 +99,6 @@ html, body {
   background: linear-gradient(180deg, var(--purple-dark) 0%, var(--purple-mid) 40%, var(--void) 100%);
   animation: bgShimmer 8s ease-in-out infinite alternate;
 }
-
 @keyframes bgShimmer { 0% { filter: brightness(1); } 100% { filter: brightness(1.15); } }
 
 .flashes { position: absolute; inset: 0; pointer-events: none; z-index: 2; opacity: 0.4; }
@@ -123,15 +122,14 @@ canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events
   z-index: 10; pointer-events: none;
   display: flex; align-items: center; justify-content: center;
 }
-
 .logo-svg {
   width: 100%; height: 100%; display: block; overflow: visible;
   animation: logoPulse 10s ease-in-out infinite;
 }
 @keyframes logoSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes logoPulse {
-  0%, 100% { opacity: 0.15; filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.2)); }
-  50% { opacity: 0.3; filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4)); }
+  0%, 100% { opacity: 0.15; filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
+  50% { opacity: 0.3; filter: drop-shadow(0 0 15px rgba(255,255,255,0.4)); }
 }
 
 .orbit {
@@ -142,7 +140,6 @@ canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events
 .orbit-1 { width: min(90vw, 700px); animation: orbitSpin 40s linear infinite; transform: translate(-50%,-50%) rotateX(70deg); }
 .orbit-2 { width: min(80vw, 880px); animation: orbitSpin2 60s linear infinite reverse; transform: translate(-50%,-50%) rotateX(75deg) rotateZ(30deg); }
 .orbit-3 { width: min(70vw, 1060px); animation: orbitSpin3 90s linear infinite; transform: translate(-50%,-50%) rotateX(65deg) rotateZ(-45deg); }
-
 @keyframes orbitSpin { to { transform: translate(-50%,-50%) rotateX(70deg) rotateZ(360deg); } }
 @keyframes orbitSpin2 { to { transform: translate(-50%,-50%) rotateX(75deg) rotateZ(390deg); } }
 @keyframes orbitSpin3 { to { transform: translate(-50%,-50%) rotateX(65deg) rotateZ(315deg); } }
@@ -150,7 +147,7 @@ canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events
 .glyph {
   position: absolute; top: 50%;
   font-family: 'Roboto Mono', monospace; font-size: 0.65rem;
-  color: var(--dim); text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+  color: var(--dim); text-shadow: 0 0 8px rgba(255,255,255,0.3);
   white-space: nowrap; letter-spacing: 0.3em; font-weight: 300;
 }
 .glyph.top { left: 50%; transform: translate(-50%,-50%) translateY(-50%); }
@@ -159,7 +156,7 @@ canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events
 .node {
   position: absolute; width: 6px; height: 6px; border-radius: 50%;
   background: var(--white);
-  box-shadow: 0 0 15px var(--white), 0 0 30px rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 15px var(--white), 0 0 30px rgba(255,255,255,0.6);
 }
 
 .beacon {
@@ -179,7 +176,7 @@ canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events
 .corner-tag {
   position: absolute; z-index: 20;
   font-family: 'Roboto Mono', monospace; font-size: 0.45rem;
-  letter-spacing: 0.2em; color: rgba(255, 255, 255, 0.25);
+  letter-spacing: 0.2em; color: rgba(255,255,255,0.25);
   writing-mode: vertical-rl; font-weight: 300;
 }
 .corner-tag.tl { top: 20px; left: 20px; }
@@ -252,6 +249,30 @@ input[type="range"].hslider::-moz-range-track { background: transparent; border:
 }
 .search-input::placeholder { color: var(--dim); letter-spacing: 0.15em; }
 .search-input:focus { border-color: rgba(255,255,255,0.3); box-shadow: 0 0 15px rgba(255,255,255,0.08); }
+
+/* КНОПКА СКАЧАТЬ (КОМПАКТНАЯ) */
+#download-app-btn {
+  background: transparent;
+  border: 1px solid rgba(176,102,255,0.4);
+  color: var(--purple);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.65rem;
+  font-family: 'Roboto Mono', monospace;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+#download-app-btn:hover {
+  background: rgba(176,102,255,0.1);
+  border-color: var(--purple);
+  color: #d4a0ff;
+  box-shadow: 0 0 12px rgba(176,102,255,0.2);
+}
+#download-app-btn.hidden { display: none; }
 
 .lang-switch {
   display: flex; gap: 4px; background: var(--panel);
@@ -449,6 +470,13 @@ footer {
   font-family: 'Roboto Mono', monospace; text-transform: uppercase;
 }
 
+/* iOS MODAL */
+#pwa-ios-modal {
+  display:none; position:fixed; inset:0; z-index:3000; 
+  background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); 
+  align-items:center; justify-content:center; padding:20px;
+}
+
 /* ===================== RESPONSIVE ===================== */
 @media (max-width: 768px) {
   .header { height: 480px; }
@@ -484,7 +512,10 @@ footer {
   .np-btn { width: 40px; height: 40px; font-size: 1rem; }
   .np-controls { gap: 10px; }
   .top-bar { flex-wrap: wrap; }
-  .search-input { order: 3; flex-basis: 100%; margin-top: 4px; }
+  .search-input { order: 3; flex-basis: calc(100% - 120px); margin-top: 0; }
+  #download-app-btn { order: 4; flex: 1; margin-top: 0; text-align: center; }
+  .lang-switch { order: 5; margin-top: 0; }
+  .back-btn { order: 1; }
 }
 </style>
 </head>
@@ -589,6 +620,10 @@ footer {
   <div class="top-bar">
     <button class="back-btn" id="backBtn" onclick="showGenres()">← <span data-i18n="back">Back</span></button>
     <input type="text" class="search-input" id="searchInput" placeholder="🔍 Search station..." oninput="filterStations()">
+    
+    <!-- КНОПКА СКАЧАТЬ (МЕЖДУ ПОИСКОМ И ЯЗЫКОМ) -->
+    <button id="download-app-btn" class="hidden" data-i18n-download="DOWNLOAD APP">DOWNLOAD APP</button>
+    
     <div class="lang-switch">
       <button class="lang-btn active" data-lang="en" onclick="setLanguage('en')">EN</button>
       <button class="lang-btn" data-lang="ru" onclick="setLanguage('ru')">RU</button>
@@ -633,6 +668,20 @@ footer {
     <button class="np-btn stop-btn" onclick="stopPlayback()" title="Stop"><span class="ctrl-icon stop-icon"></span></button>
     <button class="np-btn" onclick="playNext()" title="Next"><span class="ctrl-icon next-icon"></span></button>
     <button class="np-btn mute" id="muteBtn" onclick="toggleMute()" title="Mute"><span class="ctrl-icon mute-icon">🔊</span></button>
+  </div>
+</div>
+
+<!-- iOS INSTALL MODAL -->
+<div id="pwa-ios-modal">
+  <div style="background:var(--panel); border:1px solid var(--line); border-radius:24px; padding:30px; max-width:360px; text-align:center;">
+    <div style="font-size:2rem; margin-bottom:12px;">📱</div>
+    <h3 style="color:var(--white); font-size:0.9rem; margin-bottom:12px; letter-spacing:0.1em;">Install on iPhone / iPad</h3>
+    <ol style="color:var(--soft); font-size:0.75rem; line-height:1.8; text-align:left; padding-left:18px; margin-bottom:20px;">
+      <li>Tap the <strong>Share</strong> button <span style="display:inline-block;width:16px;height:16px;background:var(--white);border-radius:3px;text-align:center;line-height:16px;color:#000;font-size:10px;vertical-align:middle;">↑</span> in Safari</li>
+      <li>Scroll down and tap <strong>«Add to Home Screen»</strong></li>
+      <li>Tap <strong>«Add»</strong> in the top right</li>
+    </ol>
+    <button onclick="document.getElementById('pwa-ios-modal').style.display='none'" style="background:var(--purple); color:#fff; border:none; padding:10px 24px; border-radius:16px; font-size:0.7rem; cursor:pointer; font-family:'Roboto Mono',monospace; letter-spacing:0.1em;">GOT IT</button>
   </div>
 </div>
 
@@ -696,6 +745,7 @@ var translations = {
     now_playing: "NOW PLAYING:", tuning: "TUNING:", connecting: "Connecting to",
     signal_lost: "Signal lost. Tuning to", stations: "stations",
     search_placeholder: "🔍 Search station...",
+    download_app: "DOWNLOAD APP",
     genre_pop: "Pop / Mainstream", genre_electronic: "Electronic / Dance",
     genre_jazz: "Jazz / Blues / Soul", genre_classical: "Classical / Opera",
     genre_ambient: "Ambient / Chillout", genre_hiphop: "Rap / Hip-Hop",
@@ -710,6 +760,7 @@ var translations = {
     now_playing: "СЕЙЧАС ИГРАЕТ:", tuning: "НАСТРОЙКА:", connecting: "Подключение к",
     signal_lost: "Сигнал потерян. Настройка на", stations: "станций",
     search_placeholder: "🔍 Поиск станции...",
+    download_app: "СКАЧАТЬ ПРИЛОЖЕНИЕ",
     genre_pop: "Поп / Мейнстрим", genre_electronic: "Электроника / Танцы",
     genre_jazz: "Джаз / Блюз / Соул", genre_classical: "Классика / Опера",
     genre_ambient: "Эмбиент / Чилаут", genre_hiphop: "Рэп / Хип-хоп",
@@ -718,7 +769,7 @@ var translations = {
   }
 };
 
-/* ===================== STATIONS ===================== */
+/* ===================== STATIONS (138 VERIFIED) ===================== */
 var worldStations = [
   { id: 1, genre: "pop", name: { en: "Antenne Bayern", ru: "Antenne Bayern" }, country: { en: "Germany", ru: "Германия" }, bitrate: "128 kbps", stream: "https://mp3channels.webradio.antenne.de/antenne" },
   { id: 2, genre: "pop", name: { en: "SRF 3", ru: "SRF 3" }, country: { en: "Switzerland", ru: "Швейцария" }, bitrate: "128 kbps", stream: "https://stream.srg-ssr.ch/m/drs3/mp3_128" },
@@ -880,6 +931,11 @@ function setLanguage(lang) {
   document.documentElement.lang = lang;
   document.querySelectorAll('[data-i18n]').forEach(function(el) { var key = el.dataset.i18n; if (translations[lang][key]) el.textContent = translations[lang][key]; });
   if (searchInput) searchInput.placeholder = t('search_placeholder');
+  
+  // Обновляем текст кнопки скачивания
+  var dlBtn = document.getElementById('download-app-btn');
+  if (dlBtn) dlBtn.textContent = t('download_app');
+  
   renderGenres();
   if (currentGenre) { renderStations(); updateGenreHeader(); }
   if (currentStationId) { var st = worldStations.find(function(s) { return s.id === currentStationId; }); if (st) npTrack.textContent = st.name[lang]; }
@@ -1001,31 +1057,120 @@ Spore.prototype.draw = function() { sctx.beginPath(); sctx.arc(this.x, this.y, t
 var spores = []; for (var i = 0; i < 60; i++) spores.push(new Spore());
 function animateSpores() { sctx.clearRect(0, 0, sporesCanvas.width, sporesCanvas.height); spores.forEach(function(s) { s.update(); s.draw(); }); requestAnimationFrame(animateSpores); } animateSpores();
 
-/* ===================== SONAR ===================== */
+/* ===================== SONAR (ЦЕНТР = ЛОГОТИП) ===================== */
 var sonarCanvas = document.getElementById('sonar'), soctx = sonarCanvas.getContext('2d');
 var WAVE_LIFETIME_MS = 5 * 60 * 1000, MAX_WAVES = 150, waves = [];
-function resizeSonar() { sonarCanvas.width = window.innerWidth * devicePixelRatio; sonarCanvas.height = 520 * devicePixelRatio; } resizeSonar();
-function SonarWave() { this.cx = sonarCanvas.width / 2; this.cy = sonarCanvas.height * 0.42; this.radius = 0; this.maxRadius = Math.min(sonarCanvas.width, sonarCanvas.height) * 0.48; this.speed = 1.5 + Math.random(); this.born = Date.now(); }
+
+function getLogoCenter() {
+  var headerH = document.querySelector('.header').offsetHeight;
+  var logoTopPct = 0.42;
+  return { x: sonarCanvas.width / 2, y: headerH * devicePixelRatio * logoTopPct };
+}
+
+function resizeSonar() {
+  sonarCanvas.width = window.innerWidth * devicePixelRatio;
+  sonarCanvas.height = 520 * devicePixelRatio;
+}
+resizeSonar();
+
+function SonarWave() {
+  var center = getLogoCenter();
+  this.cx = center.x; this.cy = center.y;
+  this.radius = 0;
+  this.maxRadius = Math.min(sonarCanvas.width, sonarCanvas.height) * 0.48;
+  this.speed = 1.5 + Math.random();
+  this.born = Date.now();
+}
 SonarWave.prototype.isExpired = function() { return (Date.now() - this.born) > WAVE_LIFETIME_MS; };
 SonarWave.prototype.update = function() { this.radius += this.speed; return this.radius < this.maxRadius && !this.isExpired(); };
-SonarWave.prototype.draw = function() { var progress = this.radius / this.maxRadius; var alpha = (1 - progress) * 0.35; if (alpha <= 0) return; soctx.strokeStyle = 'rgba(255,255,255,' + alpha + ')'; soctx.lineWidth = 1.5 * devicePixelRatio; soctx.beginPath(); soctx.arc(this.cx, this.cy, this.radius, 0, Math.PI * 2); soctx.stroke(); if (this.radius > 20) { soctx.strokeStyle = 'rgba(255,255,255,' + (alpha * 0.4) + ')'; soctx.beginPath(); soctx.arc(this.cx, this.cy, this.radius - 15, 0, Math.PI * 2); soctx.stroke(); } };
-function spawnWave() { if (waves.length >= MAX_WAVES) waves.shift(); waves.push(new SonarWave()); } setInterval(spawnWave, 2000); spawnWave();
-function animateSonar() { soctx.clearRect(0, 0, sonarCanvas.width, sonarCanvas.height); for (var i = waves.length - 1; i >= 0; i--) { if (!waves[i].update()) waves.splice(i, 1); else waves[i].draw(); } requestAnimationFrame(animateSonar); } animateSonar();
-window.addEventListener('resize', function() { resizeSpores(); resizeSonar(); var newCx = sonarCanvas.width / 2, newCy = sonarCanvas.height * 0.42; waves.forEach(function(w) { w.cx = newCx; w.cy = newCy; w.maxRadius = Math.min(sonarCanvas.width, sonarCanvas.height) * 0.48; }); });
+SonarWave.prototype.draw = function() {
+  var progress = this.radius / this.maxRadius;
+  var alpha = (1 - progress) * 0.35;
+  if (alpha <= 0) return;
+  soctx.strokeStyle = 'rgba(255,255,255,' + alpha + ')';
+  soctx.lineWidth = 1.5 * devicePixelRatio;
+  soctx.beginPath(); soctx.arc(this.cx, this.cy, this.radius, 0, Math.PI * 2); soctx.stroke();
+  if (this.radius > 20) {
+    soctx.strokeStyle = 'rgba(255,255,255,' + (alpha * 0.4) + ')';
+    soctx.beginPath(); soctx.arc(this.cx, this.cy, this.radius - 15, 0, Math.PI * 2); soctx.stroke();
+  }
+};
 
-/* ===================== INIT & SEO SCHEMA GENERATION ===================== */
+function spawnWave() { if (waves.length >= MAX_WAVES) waves.shift(); waves.push(new SonarWave()); }
+setInterval(spawnWave, 2000); spawnWave();
+
+function animateSonar() {
+  soctx.clearRect(0, 0, sonarCanvas.width, sonarCanvas.height);
+  for (var i = waves.length - 1; i >= 0; i--) {
+    if (!waves[i].update()) waves.splice(i, 1); else waves[i].draw();
+  }
+  requestAnimationFrame(animateSonar);
+}
+animateSonar();
+
+window.addEventListener('resize', function() {
+  resizeSpores(); resizeSonar();
+  var center = getLogoCenter();
+  waves.forEach(function(w) { w.cx = center.x; w.cy = center.y; w.maxRadius = Math.min(sonarCanvas.width, sonarCanvas.height) * 0.48; });
+});
+
+/* ===================== DOWNLOAD BUTTON LOGIC ===================== */
+(function initDownloadButton() {
+  var btn = document.getElementById('download-app-btn');
+  var iosModal = document.getElementById('pwa-ios-modal');
+  if (!btn) return;
+
+  var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  var isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  var deferredPrompt = null;
+
+  // Если уже установлено — кнопка остается скрытой
+  if (isStandalone) return;
+
+  // Показываем кнопку
+  btn.classList.remove('hidden');
+
+  if (isIOS) {
+    // iOS: кнопка открывает модалку с инструкцией
+    btn.addEventListener('click', function() {
+      iosModal.style.display = 'flex';
+    });
+  } else {
+    // Android/Desktop: ждем события установки
+    window.addEventListener('beforeinstallprompt', function(e) {
+      e.preventDefault();
+      deferredPrompt = e;
+    });
+
+    btn.addEventListener('click', function() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function(result) {
+          if (result.outcome === 'accepted') {
+            btn.classList.add('hidden');
+          }
+          deferredPrompt = null;
+        });
+      } else {
+        // Fallback: если событие не пришло (например, Firefox), показываем iOS-модалку как инструкцию
+        iosModal.style.display = 'flex';
+      }
+    });
+  }
+
+  window.addEventListener('appinstalled', function() { 
+    btn.classList.add('hidden'); 
+  });
+})();
+
+/* ===================== INIT & SEO SCHEMA ===================== */
 window.addEventListener('DOMContentLoaded', function() {
   setLanguage('en');
-  
-  // Generate Schema.org for Stations dynamically
   try {
     var schema = worldStations.slice(0, 50).map(function(s) {
       return {
-        "@context": "https://schema.org",
-        "@type": "RadioStation",
-        "name": s.name.en,
-        "url": "https://musicradio.online",
-        "genre": s.genre,
+        "@context": "https://schema.org", "@type": "RadioStation",
+        "name": s.name.en, "url": "https://musicradio.online", "genre": s.genre,
         "inLanguage": s.country.en === "Russia" ? "ru" : "en",
         "broadcastDisplayName": s.name.en,
         "areaServed": { "@type": "Country", "name": s.country.en }
@@ -1036,7 +1181,7 @@ window.addEventListener('DOMContentLoaded', function() {
   } catch(e) { console.warn('Schema generation error', e); }
 });
 
-/* ===================== SERVICE WORKER REGISTRATION ===================== */
+/* ===================== SERVICE WORKER ===================== */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
     navigator.serviceWorker.register('/sw.js')
