@@ -1,18 +1,32 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=109794099', 'ym');
+
+    ym(109794099, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/109794099" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MUSIC RADIO ONLINE — Глобальный портал музыкальных радиостанций</title>
+<title>MUSIC RADIO ONLINE — Global Music Radio Portal</title>
 
 <!-- SEO -->
-<meta name="description" content="Глобальный портал музыкальных радиостанций MUSIC RADIO ONLINE. Слушайте бесплатно проверенные станции со всего мира в прямом эфире. Без рекламы, в высоком качестве.">
-<meta name="keywords" content="онлайн радио, слушать радио бесплатно, интернет радио, музыка онлайн, радио поп, электронная музыка, джаз радио, регги радио, даб, мировые радиостанции, music radio online">
-<meta property="og:title" content="MUSIC RADIO ONLINE — Глобальный портал музыкальных радиостанций">
-<meta property="og:description" content="Живые радиостанции со всего мира в прямом эфире. Поп, электроника, джаз, регги. Слушайте бесплатно в высоком качестве без рекламы.">
+<meta name="description" content="Global portal of music radio stations MUSIC RADIO ONLINE. Listen to verified stations from around the world live. Ad-free, high quality.">
+<meta name="keywords" content="online radio, listen radio free, internet radio, music online, pop radio, electronic music, jazz radio, reggae radio, dub, world radio stations, music radio online">
+<meta property="og:title" content="MUSIC RADIO ONLINE — Global Music Radio Portal">
+<meta property="og:description" content="Live radio stations from around the world. Pop, electronic, jazz, reggae. Listen free in high quality without ads.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://musicradio.online">
-<meta property="og:locale" content="ru_RU">
+<meta property="og:locale" content="en_US">
 <link rel="canonical" href="https://musicradio.online">
 
 <!-- Fonts & Telegram -->
@@ -55,7 +69,7 @@ html, body {
   overflow-x: hidden;
 }
 
-/* ===================== ШАПКА ===================== */
+/* ===================== HEADER ===================== */
 .header {
   position: relative;
   width: 100%;
@@ -104,7 +118,6 @@ canvas {
 #spores { z-index: 3; }
 #sonar { z-index: 5; }
 
-/* ЛОГОТИП — УВЕЛИЧЕН НА 25% */
 .core-wrapper {
   position: absolute;
   top: 42%;
@@ -143,7 +156,6 @@ canvas {
   }
 }
 
-/* ОРБИТЫ */
 .orbit {
   position: absolute;
   top: 42%;
@@ -216,7 +228,6 @@ canvas {
   box-shadow: 0 0 15px var(--white), 0 0 30px rgba(255, 255, 255, 0.6);
 }
 
-/* BEACON — НА МОБИЛЬНОЙ В ОДНУ СТРОКУ */
 .beacon {
   position: absolute;
   top: 24px;
@@ -264,7 +275,6 @@ canvas {
 .corner-tag.tl { top: 20px; left: 20px; }
 .corner-tag.br { bottom: 20px; right: 20px; }
 
-/* ===================== ГОРИЗОНТАЛЬНЫЕ СЛАЙДЕРЫ С ПОДСВЕТКОЙ (ВИД 3) ===================== */
 .sliders-row {
   position: absolute;
   bottom: 24px;
@@ -354,7 +364,7 @@ input[type="range"].hslider::-moz-range-track {
   height: 4px;
 }
 
-/* ===================== ОСНОВНОЙ КОНТЕНТ ===================== */
+/* ===================== MAIN CONTENT ===================== */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -688,7 +698,7 @@ td { padding: 12px 4px; }
   50% { opacity: 0.6; }
 }
 
-/* ===================== ПЛЕЕР ===================== */
+/* ===================== PLAYER ===================== */
 .now-playing {
   position: fixed;
   bottom: 0;
@@ -926,35 +936,6 @@ td { padding: 12px 4px; }
   line-height: 1;
 }
 
-/* ===================== SEO БЛОК И ФУТЕР ===================== */
-.seo-section {
-  margin-top: 40px;
-  padding: 24px;
-  border: 1px solid var(--line);
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.01);
-  text-align: center;
-}
-
-.seo-section h2 {
-  font-family: 'Roboto Mono', monospace;
-  font-size: 0.7rem;
-  color: var(--white);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: 12px;
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
-}
-
-.seo-section p {
-  font-size: 0.75rem;
-  line-height: 1.7;
-  color: var(--mid);
-  margin-bottom: 10px;
-}
-
-.seo-section p:last-child { margin-bottom: 0; }
-
 footer {
   text-align: center;
   font-size: 0.55rem;
@@ -966,7 +947,7 @@ footer {
   text-transform: uppercase;
 }
 
-/* ===================== АДАПТИВ ===================== */
+/* ===================== RESPONSIVE ===================== */
 @media (max-width: 768px) {
   .header { height: 480px; }
   .beacon {
@@ -1032,9 +1013,6 @@ footer {
   .np-controls { gap: 10px; }
   .top-bar { flex-wrap: wrap; }
   .search-input { order: 3; flex-basis: 100%; margin-top: 4px; }
-  .seo-section { padding: 16px; border-radius: 20px; }
-  .seo-section h2 { font-size: 0.6rem; }
-  .seo-section p { font-size: 0.65rem; }
 }
 </style>
 </head>
@@ -1051,7 +1029,7 @@ footer {
   </defs>
 </svg>
 
-<!-- ===================== ШАПКА ===================== -->
+<!-- ===================== HEADER ===================== -->
 <header class="header">
   <div class="flashes" id="flashes"></div>
 
@@ -1099,7 +1077,7 @@ footer {
     <span class="beacon-dot" style="animation-delay:0.75s"></span>
   </div>
 
-  <!-- ЛОГОТИП (УВЕЛИЧЕН НА 25%) -->
+  <!-- LOGO -->
   <div class="core-wrapper">
     <svg class="logo-svg" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -1118,7 +1096,7 @@ footer {
     </svg>
   </div>
 
-  <!-- ГОРИЗОНТАЛЬНЫЕ СЛАЙДЕРЫ С ПОДСВЕТКОЙ (ВИД 3) -->
+  <!-- SLIDERS -->
   <div class="sliders-row">
     <div class="slider-group">
       <span class="slider-label">Volume</span>
@@ -1141,19 +1119,19 @@ footer {
   <div class="corner-tag br">NODE · 0x7F · SYNC OK</div>
 </header>
 
-<!-- ===================== ОСНОВНОЙ КОНТЕНТ ===================== -->
+<!-- ===================== MAIN CONTENT ===================== -->
 <div class="container">
   <div class="top-bar">
-    <button class="back-btn" id="backBtn" onclick="showGenres()">← <span data-i18n="back">Назад</span></button>
-    <input type="text" class="search-input" id="searchInput" placeholder="🔍 Поиск станции..." oninput="filterStations()">
+    <button class="back-btn" id="backBtn" onclick="showGenres()">← <span data-i18n="back">Back</span></button>
+    <input type="text" class="search-input" id="searchInput" placeholder="🔍 Search station..." oninput="filterStations()">
     <div class="lang-switch">
-      <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
-      <button class="lang-btn active" data-lang="ru" onclick="setLanguage('ru')">RU</button>
+      <button class="lang-btn active" data-lang="en" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn" data-lang="ru" onclick="setLanguage('ru')">RU</button>
     </div>
   </div>
 
   <div class="panel">
-    <div class="status" id="status">STATUS: <span data-i18n="awaiting">ВЫБОР ЖАНРА</span></div>
+    <div class="status" id="status">STATUS: <span data-i18n="awaiting">SELECT GENRE</span></div>
 
     <div class="genres-view" id="genresView">
       <div class="genre-grid" id="genreGrid"></div>
@@ -1167,10 +1145,10 @@ footer {
       <table>
         <thead>
           <tr>
-            <th data-i18n="th_station">Станция ↕</th>
-            <th data-i18n="th_country">Страна ↕</th>
-            <th data-i18n="th_bitrate">Битрейт ↕</th>
-            <th data-i18n="th_signal">Сигнал</th>
+            <th data-i18n="th_station">Station ↕</th>
+            <th data-i18n="th_country">Country ↕</th>
+            <th data-i18n="th_bitrate">Bitrate ↕</th>
+            <th data-i18n="th_signal">Signal</th>
           </tr>
         </thead>
         <tbody id="tbody"></tbody>
@@ -1178,15 +1156,10 @@ footer {
     </div>
   </div>
 
-  <section class="seo-section">
-    <h2 data-i18n="about_title">О проекте</h2>
-    <p data-i18n="about_text">MUSIC RADIO ONLINE — глобальный портал музыкальных радиостанций со всего мира, которые работают в прямом эфире.</p>
-  </section>
-
-  <footer data-i18n="footer">WORLD RADIO · VERIFIED STREAMS</footer>
+  <footer data-i18n="footer">MUSIC RADIO ONLINE broadcast live</footer>
 </div>
 
-<!-- ===================== ПЛЕЕР ===================== -->
+<!-- ===================== PLAYER ===================== -->
 <div class="now-playing" id="nowPlaying">
   <div class="np-top">
     <div class="np-indicator" id="npIndicator"></div>
@@ -1300,7 +1273,7 @@ var translations = {
     th_country: "Country ",
     th_bitrate: "Bitrate ↕",
     th_signal: "Signal",
-    footer: "WORLD RADIO · VERIFIED STREAMS",
+    footer: "MUSIC RADIO ONLINE broadcast live",
     status_ready: "READY",
     status_stations: "STATIONS AVAILABLE",
     now_playing: "NOW PLAYING:",
@@ -1317,9 +1290,7 @@ var translations = {
     genre_hiphop: "Rap / Hip-Hop",
     genre_reggae: "Reggae / Dub",
     genre_psychedelic: "Psychedelic",
-    genre_religious: "Religious / Gospel",
-    about_title: "About the project",
-    about_text: "MUSIC RADIO ONLINE is a global portal of music radio stations from around the world that broadcast live."
+    genre_religious: "Religious / Gospel"
   },
   ru: {
     back: "Назад",
@@ -1328,7 +1299,7 @@ var translations = {
     th_country: "Страна ↕",
     th_bitrate: "Битрейт ↕",
     th_signal: "Сигнал",
-    footer: "МИРОВОЕ РАДИО · ПРОВЕРЕННЫЕ ПОТОКИ",
+    footer: "MUSIC RADIO ONLINE broadcast live",
     status_ready: "ГОТОВ",
     status_stations: "СТАНЦИЙ ДОСТУПНО",
     now_playing: "СЕЙЧАС ИГРАЕТ:",
@@ -1345,9 +1316,7 @@ var translations = {
     genre_hiphop: "Рэп / Хип-хоп",
     genre_reggae: "Регги / Даб",
     genre_psychedelic: "Психоделика",
-    genre_religious: "Религиозная Музыка",
-    about_title: "О проекте",
-    about_text: "MUSIC RADIO ONLINE — глобальный портал музыкальных радиостанций со всего мира, которые работают в прямом эфире."
+    genre_religious: "Религиозная Музыка"
   }
 };
 
@@ -1487,7 +1456,7 @@ var genresConfig = [
 ];
 
 /* ===================== STATE ===================== */
-var currentLang = 'ru';
+var currentLang = 'en';
 var currentGenre = null;
 var filteredStations = [];
 var currentStationId = null;
@@ -1851,10 +1820,10 @@ function animateSpores() {
 }
 animateSpores();
 
-/* ===================== SONAR (КРУГЛЫЕ ВОЛНЫ, РАСТВОРЕНИЕ 5 МИН, ЦЕНТР = ЛОГОТИП) ===================== */
+/* ===================== SONAR ===================== */
 var sonarCanvas = document.getElementById('sonar');
 var soctx = sonarCanvas.getContext('2d');
-var WAVE_LIFETIME_MS = 5 * 60 * 1000; // 5 минут
+var WAVE_LIFETIME_MS = 5 * 60 * 1000;
 var MAX_WAVES = 150;
 var waves = [];
 
@@ -1865,11 +1834,9 @@ function resizeSonar() {
 resizeSonar();
 
 function SonarWave() {
-  // Центр совпадает с core-wrapper top:42%
   this.cx = sonarCanvas.width / 2;
   this.cy = sonarCanvas.height * 0.42;
   this.radius = 0;
-  // Максимальный радиус = половина меньшей стороны → гарантированный круг
   this.maxRadius = Math.min(sonarCanvas.width, sonarCanvas.height) * 0.48;
   this.speed = 1.5 + Math.random();
   this.born = Date.now();
@@ -1902,7 +1869,6 @@ SonarWave.prototype.draw = function() {
 };
 
 function spawnWave() {
-  // Ограничиваем количество волн для производительности
   if (waves.length >= MAX_WAVES) {
     waves.shift();
   }
@@ -1928,7 +1894,6 @@ animateSonar();
 window.addEventListener('resize', function() {
   resizeSpores();
   resizeSonar();
-  // Пересчитываем центры существующих волн при ресайзе
   var newCx = sonarCanvas.width / 2;
   var newCy = sonarCanvas.height * 0.42;
   waves.forEach(function(w) {
@@ -1940,7 +1905,7 @@ window.addEventListener('resize', function() {
 
 /* ===================== INIT ===================== */
 window.addEventListener('DOMContentLoaded', function() {
-  setLanguage('ru');
+  setLanguage('en');
 });
 </script>
 </body>
