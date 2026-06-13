@@ -1,6 +1,6 @@
 {
-  "name": "MUSIC RADIO ONLINE",
-  "short_name": "MusicRadio",
+  "name": "musicradio.online",
+  "short_name": "musicradio.online",
   "description": "Global portal of live music radio stations. Ad-free, high quality.",
   "start_url": "/",
   "display": "standalone",
@@ -11,12 +11,14 @@
     {
       "src": "/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }

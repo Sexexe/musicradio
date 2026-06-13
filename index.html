@@ -34,7 +34,7 @@
 <meta name="theme-color" content="#0f001a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="MusicRadio">
+<meta name="apple-mobile-web-app-title" content="musicradio.online">
 <link rel="apple-touch-icon" href="/icon-192.png">
 
 <!-- Schema.org JSON-LD (SEO) -->
@@ -1057,14 +1057,23 @@ Spore.prototype.draw = function() { sctx.beginPath(); sctx.arc(this.x, this.y, t
 var spores = []; for (var i = 0; i < 60; i++) spores.push(new Spore());
 function animateSpores() { sctx.clearRect(0, 0, sporesCanvas.width, sporesCanvas.height); spores.forEach(function(s) { s.update(); s.draw(); }); requestAnimationFrame(animateSpores); } animateSpores();
 
-/* ===================== SONAR (ЦЕНТР = ЛОГОТИП) ===================== */
+/* ===================== SONAR (ТОЧНАЯ ЦЕНТРОВКА ПО DOM) ===================== */
 var sonarCanvas = document.getElementById('sonar'), soctx = sonarCanvas.getContext('2d');
 var WAVE_LIFETIME_MS = 5 * 60 * 1000, MAX_WAVES = 150, waves = [];
 
 function getLogoCenter() {
-  var headerH = document.querySelector('.header').offsetHeight;
-  var logoTopPct = 0.42;
-  return { x: sonarCanvas.width / 2, y: headerH * devicePixelRatio * logoTopPct };
+  // Вычисляем реальный центр логотипа относительно канваса через DOM
+  var logoEl = document.querySelector('.core-wrapper');
+  var canvasRect = sonarCanvas.getBoundingClientRect();
+  var logoRect = logoEl.getBoundingClientRect();
+  
+  var dpr = window.devicePixelRatio || 1;
+  
+  // Центр логотипа относительно левого верхнего угла канваса
+  var x = (logoRect.left + logoRect.width / 2 - canvasRect.left) * dpr;
+  var y = (logoRect.top + logoRect.height / 2 - canvasRect.top) * dpr;
+  
+  return { x: x, y: y };
 }
 
 function resizeSonar() {
@@ -1110,6 +1119,7 @@ animateSonar();
 
 window.addEventListener('resize', function() {
   resizeSpores(); resizeSonar();
+  // При ресайзе обновляем центры существующих волн
   var center = getLogoCenter();
   waves.forEach(function(w) { w.cx = center.x; w.cy = center.y; w.maxRadius = Math.min(sonarCanvas.width, sonarCanvas.height) * 0.48; });
 });
@@ -1164,8 +1174,11 @@ window.addEventListener('resize', function() {
 })();
 
 /* ===================== INIT & SEO SCHEMA ===================== */
+// ИСПРАВЛЕНИЕ БАГА: Рендерим контент сразу при загрузке DOM
 window.addEventListener('DOMContentLoaded', function() {
+  // Принудительно устанавливаем язык и рендерим жанры сразу
   setLanguage('en');
+  
   try {
     var schema = worldStations.slice(0, 50).map(function(s) {
       return {
