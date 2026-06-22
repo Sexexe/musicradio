@@ -6,7 +6,7 @@ const DEFAULT_STATION = "https://ice1.somafm.com/groovesalad-128-mp3";
 
 window.addEventListener('DOMContentLoaded',()=>{
   renderGenres();
-  filterGenre("Pop"); // Список жанров показываем как есть
+  filterGenre("Pop"); // Показываем Pop по умолчанию для списка
   
   const savedStation = localStorage.getItem('lastStation');
   const stationToPlay = savedStation || DEFAULT_STATION;
