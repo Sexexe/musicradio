@@ -1,3 +1,15 @@
 User-agent: *
+Allow: /
 Disallow: /*?genre=
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Yandex
+Allow: /
+
+User-agent: AdsBot-Google
+Allow: /
+
+User-agent: Mediapartners-Google
 Allow: /
