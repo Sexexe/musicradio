@@ -35,26 +35,30 @@
     const themeToggle=document.getElementById('themeToggle');const sunIcon=themeToggle.querySelector('.sun-icon');const moonIcon=themeToggle.querySelector('.moon-icon');
     function setTheme(theme){document.documentElement.setAttribute('data-theme',theme);localStorage.setItem('theme',theme);if(theme==='light'){sunIcon.style.display='block';moonIcon.style.display='none'}else{sunIcon.style.display='none';moonIcon.style.display='block'}if(threeScene){const bgColor=theme==='light'?0xffffff:0x000000;threeScene.background=new THREE.Color(bgColor);threeScene.fog=new THREE.FogExp2(bgColor,0.0001)}}
     const savedTheme=localStorage.getItem('theme');const systemPrefersLight=window.matchMedia('(prefers-color-scheme: light)').matches;setTheme(savedTheme||(systemPrefersLight?'light':'dark'));
-    themeToggle.addEventListener('click',()=>{themeToggle.classList.add('active');const current=document.documentElement.getAttribute('data-theme');setTheme(current==='light'?'dark':'light');fastUnlock();setTimeout(()=>themeToggle.classList.remove('active'),500)});
-    const STATION_DEFAULT="https://hitfm.hostingradio.ru/hitfm128.mp3";let audioUnlocked=false;let fadeInterval=null;let firstPlayDone=false;
+    themeToggle.addEventListener('click',()=>{themeToggle.classList.add('active');const current=document.documentElement.getAttribute('data-theme');setTheme(current==='light'?'dark':'light');setTimeout(()=>themeToggle.classList.remove('active'),500)});
 
-    // 🔑 ПЛАВНОЕ НАРАСТАНИЕ 0→30% за 5 сек
+    const STATION_HITFM="https://hitfm.hostingradio.ru/hitfm128.mp3";
+    let audioUnlocked=false;let fadeInterval=null;
+
+    // 🔑 НАДЁЖНЫЙ ФЕЙД: работает через linearRampToValueAtTime (нативный Web Audio API)
     function fadeInVolume(){
-      if(fadeInterval)clearInterval(fadeInterval);
-      const targetVol=0.3;const duration=5000;const stepTime=50;const steps=duration/stepTime;let step=0;
-      if(gainNode&&audioCtx&&audioCtx.state!=='closed'){
-        try{gainNode.gain.cancelScheduledValues(audioCtx.currentTime);gainNode.gain.setValueAtTime(0,audioCtx.currentTime)}catch(e){}
+      if(!gainNode||!audioCtx||audioCtx.state==='closed')return;
+      try{
+        gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+        gainNode.gain.setValueAtTime(0,audioCtx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.3,audioCtx.currentTime+5);
+      }catch(e){
+        // Fallback если Web Audio API не поддерживает ramp
+        if(fadeInterval)clearInterval(fadeInterval);
+        const targetVol=0.3;const duration=5000;const stepTime=50;const steps=duration/stepTime;let step=0;
+        audioPlayer.volume=0;volSlider.value=0;volVal.textContent='0%';
+        fadeInterval=setInterval(()=>{
+          step++;const p=Math.min(step/steps,1);const v=p*p*(3-2*p)*targetVol;
+          audioPlayer.volume=v;
+          const pct=Math.round(v*100);volSlider.value=pct;volVal.textContent=pct+'%';
+          if(p>=1){clearInterval(fadeInterval);fadeInterval=null}
+        },stepTime);
       }
-      audioPlayer.volume=0;
-      volSlider.value=0;volVal.textContent='0%';
-      fadeInterval=setInterval(()=>{
-        step++;const p=Math.min(step/steps,1);const e=p*p*(3-2*p);const v=e*targetVol;
-        if(gainNode&&audioCtx&&audioCtx.state!=='closed'){
-          try{gainNode.gain.setValueAtTime(v,audioCtx.currentTime)}catch(ex){audioPlayer.volume=v}
-        }else{audioPlayer.volume=v}
-        const pct=Math.round(v*100);volSlider.value=pct;volVal.textContent=pct+'%';
-        if(p>=1){clearInterval(fadeInterval);fadeInterval=null;firstPlayDone=true}
-      },stepTime);
     }
 
     function applyCurrentVolume(){
@@ -68,26 +72,58 @@
     tapOverlay.addEventListener('click',()=>{dismissOverlay();fastUnlock()},{once:true});
     tapOverlay.addEventListener('touchstart',()=>{dismissOverlay();fastUnlock()},{once:true,passive:true});
 
+    // 🔑 ГАРАНТИРОВАННЫЙ ЗАПУСК: сначала play(), потом фейд
     function fastUnlock(){
       if(audioUnlocked)return;
       dismissOverlay();
-      if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume().catch(()=>{});
-      const wasFirst=!currentStationId;
-      const playPromise=wasFirst?playStation(STATION_DEFAULT):audioPlayer.play();
-      const afterPlay=()=>{
-        audioUnlocked=true;removeAllUnlockListeners();
-        if(wasFirst&&!firstPlayDone)fadeInVolume();
+      
+      // 1. Инициализируем контекст и станцию
+      initAudioContext();
+      filterGenre("Pop");
+      playStation(STATION_HITFM);
+      
+      // 2. Разблокируем и запускаем фейд ТОЛЬКО после успешного play
+      const tryPlay=()=>{
+        if(audioCtx&&audioCtx.state==='suspended'){
+          audioCtx.resume().then(()=>{
+            audioUnlocked=true;removeAllUnlockListeners();fadeInVolume();
+          }).catch(()=>{
+            // Если resume не сработал, пробуем ещё раз через короткий таймаут
+            setTimeout(()=>{
+              audioCtx.resume().then(()=>{audioUnlocked=true;removeAllUnlockListeners();fadeInVolume()}).catch(()=>{});
+            },100);
+          });
+        }else{
+          audioUnlocked=true;removeAllUnlockListeners();fadeInVolume();
+        }
       };
-      if(playPromise&&typeof playPromise.then==='function')playPromise.then(afterPlay).catch(afterPlay);
-      else afterPlay();
+      
+      // Проверяем состояние play()
+      if(audioPlayer.paused){
+        const p=audioPlayer.play();
+        if(p&&typeof p.then==='function'){
+          p.then(tryPlay).catch(()=>setTimeout(tryPlay,100));
+        }else{
+          setTimeout(tryPlay,100);
+        }
+      }else{
+        tryPlay();
+      }
     }
+    
     function removeAllUnlockListeners(){['pointerdown','touchstart','mousedown','click','scroll','wheel','keydown'].forEach(e=>window.removeEventListener(e,fastUnlock,true))}
 
     window.addEventListener('DOMContentLoaded',()=>{
       renderGenres();initAudioContext();
       const urlParams=new URLSearchParams(window.location.search);const stationParam=urlParams.get('station');
-      if(stationParam){const decoded=decodeURIComponent(stationParam);const found=stations.find(s=>s.stream===decoded);if(found){filterGenre(found.genre);playStation(decoded)}else{filterGenre("Pop");playStation(STATION_DEFAULT)}}
-      else{filterGenre("Pop");const saved=localStorage.getItem('lastStation');playStation(saved||STATION_DEFAULT)}
+      if(stationParam){
+        const decoded=decodeURIComponent(stationParam);const found=stations.find(s=>s.stream===decoded);
+        if(found){filterGenre(found.genre);playStation(decoded)}
+        else{filterGenre("Pop")}
+      }else{
+        filterGenre("Pop");
+      }
+      render();
       window.addEventListener('pointerdown',fastUnlock,{passive:true,capture:true});
       window.addEventListener('touchstart',fastUnlock,{passive:true,capture:true});
       window.addEventListener('mousedown',fastUnlock,{capture:true});
@@ -120,7 +156,7 @@
 
     function startWaveVisualizer(){const data=new Uint8Array(analyser.frequencyBinCount);function animate(){if(vizActive){requestAnimationFrame(animate);return}analyser.getByteFrequencyData(data);let sum=0;for(let i=0;i<data.length;i++)sum+=data[i];const avg=sum/data.length,intensity=Math.min(avg/60,4);const bw=2+(intensity*10),op=Math.min(0.3+(intensity*0.7),1),dur=Math.max(14-(intensity*12),1.5);waveCircles.forEach(c=>{c.style.borderWidth=`${bw}px`;c.style.opacity=op;c.style.animationDuration=`${dur}s`;c.style.borderColor=`rgba(0,212,255,${op})`;c.style.boxShadow=`0 0 ${intensity*30}px rgba(0,212,255,${op*0.7})`});const isLight=document.documentElement.getAttribute('data-theme')==='light';if(!isLight){logoSvg.style.transform=`rotate(${timeGlobal*20}deg)`;logoSvg.style.opacity='1';logoSvg.style.filter='none'}else{logoSvg.style.transform=`rotate(${timeGlobal*20}deg)`;logoSvg.style.opacity='1';logoSvg.style.filter='none'}requestAnimationFrame(animate)}animate()}
 
-    function updateVol(s){if(fadeInterval){clearInterval(fadeInterval);fadeInterval=null;firstPlayDone=true}const v=parseInt(s.value);volVal.textContent=v+'%';applyCurrentVolume()}
+    function updateVol(s){if(fadeInterval){clearInterval(fadeInterval);fadeInterval=null}const v=parseInt(s.value);volVal.textContent=v+'%';applyCurrentVolume()}
     function updateBass(s){const v=parseInt(s.value);document.getElementById('bassVal').textContent=(v>0?'+':'')+v+'dB';if(bassFilter)bassFilter.gain.value=v}
     function updateTreble(s){const v=parseInt(s.value);document.getElementById('trebleVal').textContent=(v>0?'+':'')+v+'dB';if(trebleFilter)trebleFilter.gain.value=v}
 
@@ -130,7 +166,8 @@
       if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume().catch(()=>{});
       if(stallTimer)clearTimeout(stallTimer);
       currentStationId=streamUrl;audioPlayer.src=streamUrl;
-      applyCurrentVolume();
+      // При ручном переключении станции — применяем текущую громкость без фейда
+      if(audioUnlocked)applyCurrentVolume();
       trayText.textContent=`${station.name} • ${station.country}`;trayText.style.color='var(--cyan)';trayIndicator.style.background='var(--cyan)';
       render();
       const p=audioPlayer.play().catch(e=>{console.warn('Autoplay blocked',e)});
