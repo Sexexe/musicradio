@@ -1225,6 +1225,7 @@
           dismissOverlay();
           filterGenre(found.genre);
           currentStationId = decoded;
+          audioPlayer.src = decoded; // Устанавливаем источник аудио для воспроизведения по ссылке
           trayText.textContent = `${found.name} • ${found.country}`;
           trayText.style.color = 'var(--cyan)';
           trayIndicator.style.background = 'var(--cyan)';
@@ -1288,7 +1289,8 @@
 
     function filterGenre(genre) {
       currentGenre = genre;
-      document.querySelectorAll('.genre-item').forEach(el => el.classList.remove('active'));
+      // Сбрасываем активное состояние у всех кнопок жанров И у звезды (избранного)
+      document.querySelectorAll('.genre-item, .genre-fav').forEach(el => el.classList.remove('active'));
 
       if (genre === 'Favorites') {
         const favItem = document.querySelector('.genre-fav');
