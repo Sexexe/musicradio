@@ -202,7 +202,7 @@
     .genre-list {
       display: flex;
       flex-wrap: nowrap;
-      gap: 4px;
+      gap: 0;
       justify-content: flex-start;
       width: 100%;
       margin-bottom: 8px;
@@ -229,7 +229,10 @@
       font-family: 'Myriad', 'Arial', sans-serif;
       text-align: center;
       white-space: nowrap;
+      margin-right: 4px;
     }
+
+    .genre-item:last-child { margin-right: 0; }
 
     .genre-item.active {
       color: var(--cyan);
@@ -243,7 +246,7 @@
       width: 30px;
       height: 30px;
       padding: 0;
-      margin-right: calc(2mm - 4px);
+      margin-right: 2mm;
       cursor: pointer;
       transition: all .3s ease;
       flex-shrink: 0;
@@ -340,7 +343,7 @@
       width: 100%;
       border-collapse: collapse;
       font-size: .7rem;
-      table-layout: fixed;
+      table-layout: auto;
       margin: 0 auto;
     }
 
@@ -356,8 +359,8 @@
       font-family: 'Myriad', 'Arial', sans-serif;
     }
 
-    thead th:first-child { text-align: left; padding-left: 34px; }
-    thead th:last-child { text-align: right; width: auto; padding-right: 0; }
+    thead th:first-child { text-align: left; padding-left: 0; }
+    thead th:last-child { text-align: right; padding-right: 0; }
 
     tbody tr {
       border-radius: 8px;
@@ -369,25 +372,22 @@
 
     td { padding: 10px 0; }
     .station-col { text-align: left; padding-left: 0; }
-    .signal-col { text-align: right; width: auto; padding-right: 0; white-space: nowrap; }
+    .signal-col { text-align: right; padding-right: 0; }
     
-    .station-info {
-      display: inline-block;
-      vertical-align: middle;
+    .station-wrap {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      cursor: pointer;
+      line-height: 1.2;
     }
+
+    .station { font-weight: 300; font-size: .75rem; color: var(--text); }
     
-    .station { 
-      display: block;
-      font-weight: 300; 
-      font-size: calc(.75rem + 1pt); 
-      color: var(--text); 
-    }
-    
-    .country {
-      display: block;
+    .country-name {
       font-size: calc(0.6em + 1pt);
       color: var(--text-dim);
-      margin-top: 2px;
+      margin-top: 1px;
     }
 
     .star-btn {
@@ -401,7 +401,7 @@
       transition: all .3s ease;
       position: relative;
       padding: 0;
-      margin-right: 4px;
+      margin-right: 0;
       flex-shrink: 0;
     }
 
@@ -808,8 +808,8 @@
       .logo-svg text { font-size: 18px !important; }
       .main-block { width: 94%; margin-top: 8px; padding: 5mm; }
       .genre-list { margin-bottom: 8px; }
-      .genre-item { font-size: .7rem; padding: 6px 1px; letter-spacing: .25px; }
-      .genre-fav { width: 30px; height: 30px; margin-right: calc(2mm - 4px); }
+      .genre-item { font-size: .7rem; padding: 6px 1px; letter-spacing: .25px; margin-right: 4px; }
+      .genre-fav { width: 30px; height: 30px; margin-right: 2mm; }
       .genre-fav svg { width: 15px; height: 15px; }
       .install-btn-genre {
         width: 100%;
@@ -821,9 +821,6 @@
       }
       .panel { padding: 0; }
       table { width: 100%; }
-      thead th:first-child { padding-left: 34px; }
-      thead th:last-child { width: auto; text-align: right; }
-      .signal-col { width: auto; text-align: right; }
       .yandex-ad-wrapper { min-height: 90px; margin: 10px 0; }
       .eq-panel { padding: 10px 5px; gap: 5px; }
       .eq-group { gap: 4px; }
@@ -832,7 +829,7 @@
       input[type="range"] { max-width: 60px; }
       .remote { padding: 10px 15px 20px; gap: 12px; }
       .np-btn { width: 55px; height: 55px; }
-      .star-btn { width: 30px; margin-right: 4px; }
+      .star-btn { width: 30px; margin-right: 0; }
       .star-btn svg { width: 12px; height: 12px; }
     }
   </style>
@@ -1026,18 +1023,18 @@
       {name:"KXLU Los Angeles", genre:"Rock", country:"USA", stream:"https://kxlu.streamguys1.com/kxlu-hi"},
       {name:"CKRY Calgary", genre:"Rock", country:"Canada", stream:"https://live.leanstream.co/CKRYFM"},
       {name:"NPO Radio 2", genre:"Rock", country:"Netherlands", stream:"https://icecast.omroep.nl/radio2-bb-mp3"},
-      {name:"Record Rap Classics", genre:"Hip-Hop", country:"Russia", stream:"https://radiorecord.hostingradio.ru/rapclassics96.aacp"},
-      {name:"SomaFM: Cliqhop", genre:"Hip-Hop", country:"USA", stream:"https://ice1.somafm.com/cliqhop-128-mp3"},
-      {name:"SomaFM: Dub Step", genre:"Hip-Hop", country:"USA", stream:"https://ice1.somafm.com/dubstep-128-mp3"},
-      {name:"Маятник Фуко - Record", genre:"Hip-Hop", country:"Russia", stream:"https://radiorecord.hostingradio.ru/mf96.aacp"},
-      {name:"Black Rap - Record", genre:"Hip-Hop", country:"Russia", stream:"https://radiorecord.hostingradio.ru/yo96.aacp"},
-      {name:"Phonk - Record", genre:"Hip-Hop", country:"Russia", stream:"https://radiorecord.hostingradio.ru/phonk96.aacp"},
-      {name:"STUDIO 21", genre:"Hip-Hop", country:"Russia", stream:"https://stream.studio21.ru/studio2196.aacp"},
-      {name:"Trap - Record", genre:"Hip-Hop", country:"Russia", stream:"https://radiorecord.hostingradio.ru/trap96.aacp"}
+      {name:"Record Rap Classics", genre:"RAP", country:"Russia", stream:"https://radiorecord.hostingradio.ru/rapclassics96.aacp"},
+      {name:"SomaFM: Cliqhop", genre:"RAP", country:"USA", stream:"https://ice1.somafm.com/cliqhop-128-mp3"},
+      {name:"SomaFM: Dub Step", genre:"RAP", country:"USA", stream:"https://ice1.somafm.com/dubstep-128-mp3"},
+      {name:"Маятник Фуко - Record", genre:"RAP", country:"Russia", stream:"https://radiorecord.hostingradio.ru/mf96.aacp"},
+      {name:"Black Rap - Record", genre:"RAP", country:"Russia", stream:"https://radiorecord.hostingradio.ru/yo96.aacp"},
+      {name:"Phonk - Record", genre:"RAP", country:"Russia", stream:"https://radiorecord.hostingradio.ru/phonk96.aacp"},
+      {name:"STUDIO 21", genre:"RAP", country:"Russia", stream:"https://stream.studio21.ru/studio2196.aacp"},
+      {name:"Trap - Record", genre:"RAP", country:"Russia", stream:"https://radiorecord.hostingradio.ru/trap96.aacp"}
     ];
 
     const stations = SHEKER_STATIONS;
-    const genres = ["Pop", "Electro", "Ambient", "Jazz", "Classic", "Rock", "Hip-Hop"];
+    const genres = ["Pop", "Electro", "Ambient", "Jazz", "Classic", "Rock", "RAP"];
     let currentGenre = "Pop";
     let filteredStations = [];
     let currentSort = {column: 'name', direction: 'asc'};
@@ -1334,9 +1331,9 @@
         return `<tr class="${sel ? 'selected' : ''}">
           <td class="station-col">
             <span class="${starClass}" onclick="event.stopPropagation(); toggleFavorite('${r.stream}')" title="${fav ? 'Remove from favorites' : 'Add to favorites'}">${getStarSVG()}</span>
-            <span class="station-info" onclick="playStation('${r.stream}')" style="cursor:pointer">
+            <span class="station-wrap" onclick="playStation('${r.stream}')">
               <span class="station">${r.name}</span>
-              <span class="country">${r.country}</span>
+              <span class="country-name">${r.country}</span>
             </span>
           </td>
           <td class="signal-col">
