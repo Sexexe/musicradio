@@ -813,7 +813,7 @@
       .genre-item { font-size: .7rem; padding: 6px 0; letter-spacing: clamp(-1px, 0.3vw, 0.5px); word-spacing: clamp(-3px, 0vw, 0px); }
       .genre-fav svg { width: 12px; height: 12px; }
       .install-btn-genre {
-        width: 100%;
+        width: 150px;
         margin: 8px auto 0;
         padding: 6px 16px;
         font-size: .6rem;
@@ -1225,7 +1225,7 @@
           dismissOverlay();
           filterGenre(found.genre);
           currentStationId = decoded;
-          audioPlayer.src = decoded; // Устанавливаем источник аудио для воспроизведения по ссылке
+          audioPlayer.src = decoded;
           trayText.textContent = `${found.name} • ${found.country}`;
           trayText.style.color = 'var(--cyan)';
           trayIndicator.style.background = 'var(--cyan)';
@@ -1289,7 +1289,6 @@
 
     function filterGenre(genre) {
       currentGenre = genre;
-      // Сбрасываем активное состояние у всех кнопок жанров И у звезды (избранного)
       document.querySelectorAll('.genre-item, .genre-fav').forEach(el => el.classList.remove('active'));
 
       if (genre === 'Favorites') {
@@ -1722,7 +1721,7 @@
       window.addEventListener('beforeinstallprompt', e => {
         e.preventDefault();
         deferredPrompt = e;
-        if (installBtn) installBtn.style.display = 'inline-flex';
+        if (installBtn) installBtn.style.display = 'flex';
       });
       if (installBtn) installBtn.addEventListener('click', async () => {
         if (!deferredPrompt) return;
