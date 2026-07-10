@@ -1216,8 +1216,11 @@
       loadFavorites();
       renderGenres();
       initAudioContext();
+      
+      // ИСПРАВЛЕНО: Проверяем и hash, и query параметры для обратной совместимости
       const urlParams = new URLSearchParams(window.location.search);
-      const stationParameter = urlParams.get('station');
+      const hashParams = new URLSearchParams(window.location.hash.substring(1));
+      const stationParameter = hashParams.get('station') || urlParams.get('station');
 
       if (stationParameter) {
         const decoded = decodeURIComponent(stationParameter);
@@ -1356,8 +1359,10 @@
       }).join('');
     }
 
+    // ИСПРАВЛЕНО: Теперь используем hash (#) вместо query (?) для ссылок
+    // Google НЕ индексирует hash-части URL, что решает проблему дублей
     function copyShareLink(btn, streamUrl) {
-      const shareUrl = window.location.origin + '/?station=' + encodeURIComponent(streamUrl);
+      const shareUrl = window.location.origin + '/#station=' + encodeURIComponent(streamUrl);
       navigator.clipboard.writeText(shareUrl).then(() => {
         const original = btn.textContent;
         btn.textContent = '✓';
