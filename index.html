@@ -1032,7 +1032,8 @@
       {name:"Black Rap - Record", genre:"RAP", country:"Russia", stream:"https://radiorecord.hostingradio.ru/yo96.aacp"},
       {name:"Phonk - Record", genre:"RAP", country:"Russia", stream:"https://radiorecord.hostingradio.ru/phonk96.aacp"},
       {name:"STUDIO 21", genre:"RAP", country:"Russia", stream:"https://stream.studio21.ru/studio2196.aacp"},
-      {name:"Trap - Record", genre:"RAP", country:"Russia", stream:"https://radiorecord.hostingradio.ru/trap96.aacp"}
+      {name:"Trap - Record", genre:"RAP", country:"Russia", stream:"https://radiorecord.hostingradio.ru/trap96.aacp"},
+      {name:"Street Beat FM", genre:"RAP", country:"Russia", stream:"https://stream.streetbeatfm.ru/online"}
     ];
 
     const stations = SHEKER_STATIONS;
@@ -1217,7 +1218,6 @@
       renderGenres();
       initAudioContext();
       
-      // ИСПРАВЛЕНО: Проверяем и hash, и query параметры для обратной совместимости
       const urlParams = new URLSearchParams(window.location.search);
       const hashParams = new URLSearchParams(window.location.hash.substring(1));
       const stationParameter = hashParams.get('station') || urlParams.get('station');
@@ -1359,8 +1359,6 @@
       }).join('');
     }
 
-    // ИСПРАВЛЕНО: Теперь используем hash (#) вместо query (?) для ссылок
-    // Google НЕ индексирует hash-части URL, что решает проблему дублей
     function copyShareLink(btn, streamUrl) {
       const shareUrl = window.location.origin + '/#station=' + encodeURIComponent(streamUrl);
       navigator.clipboard.writeText(shareUrl).then(() => {
